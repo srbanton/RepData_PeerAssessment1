@@ -75,7 +75,7 @@ axis.POSIXct(1, at=seq(r[1], r[2], by="4 hours"), format="%H:%M")
 maxi <- as.character(round(max(out2$avg),digits=2))
 time <- substr(strftime(day[which(out2$avg==max(out2$avg))],"%H:%M:%S"),1,5)
 ```
-### <center> The time 08:35AM has the maximum number of steps daily (206.17) on average. </center>
+#### <center> The time 08:35AM has the maximum number of steps daily (206.17) on average. </center>
 
 ## 3. Imputing missing values
 
@@ -125,7 +125,7 @@ hist(out3$total, ylim=c(0,40),
 
 <img src="figure/Total Steps Taken Each Day (NAs Imputed)-1.png" title="plot of chunk Total Steps Taken Each Day (NAs Imputed)" alt="plot of chunk Total Steps Taken Each Day (NAs Imputed)" style="display: block; margin: auto;" />
 
-### <center> Imputing NAs with the rounded mean of steps for each interval shifts the distribution to the left slight, as the values of the mean & median both decreased. </center>
+#### <center> Imputing NAs with the rounded mean of steps for each interval shifts the distribution to the left slight, as the values of the mean & median both decreased. </center>
 
 ## 4. Are there differences in activity patterns between weekdays and weekends?
 
@@ -162,4 +162,4 @@ g + geom_line(aes(group=day.type,color=day.type)) + facet_grid(day.type ~ .) +
 
 <img src="figure/Hourly Activity Pattern by Weekday or Weekend (NAs Imputed)-1.png" title="plot of chunk Hourly Activity Pattern by Weekday or Weekend (NAs Imputed)" alt="plot of chunk Hourly Activity Pattern by Weekday or Weekend (NAs Imputed)" style="display: block; margin: auto;" />
 
-### <center> Activity during the weekend is less than during weekdays which suggests that the subject works from Monday-Friday and rests on Saturday & Sunday. </center>
+#### <center> Activity during the weekend is less than during weekdays which suggests that the subject works from Monday-Friday and rests on Saturday & Sunday. </center>
