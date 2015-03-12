@@ -8,30 +8,48 @@ output:
 <!-- rmarkdown v1 -->
 
 ## Loading and preprocessing the data
-```{r setup, echo=TRUE, message=FALSE}
+
+```r
 library(dplyr)
 data <- tbl_df(read.csv("activity.csv"))
 ```
 
 ## 1. What are the mean & median total number of steps taken per day?
-```{r, message=FALSE}
+
+```r
 data <- mutate(data,date=as.Date(date,"%Y-%m-%d"))
 out <- data %>% group_by(date) %>% summarise(count = n(), total = sum(steps,na.rm=TRUE))
 ```
 
 #### Calculate mean and median 
-```{r}
+
+```r
 mean(out$total[!out$total==0]) #sum() replaces sums NAs to 0
+```
+
+```
+## [1] 10766.19
+```
+
+```r
 median(out$total[!out$total==0])
 ```
 
+```
+## [1] 10765
+```
+
 #### Histogram of total steps
-```{r Histogram of Total Steps Each Day, fig.align='center'}
+
+```r
 hist(out$total[!out$total==0],ylim=c(0,30),xlab="Total Steps",main="Total Steps Taken Each Day")
 ```
 
+<img src="figure/Histogram of Total Steps Each Day-1.png" title="plot of chunk Histogram of Total Steps Each Day" alt="plot of chunk Histogram of Total Steps Each Day" style="display: block; margin: auto;" />
+
 ## 2. What is the average daily activity pattern?
-```{r Average Daily Activity Pattern, message=FALSE, fig.align='center', fig.width=10}
+
+```r
 library(lubridate)
 
 ## Change interval into time format
@@ -49,22 +67,31 @@ r <- as.POSIXct(round(range(day[1:288]), "hours"))
 axis.POSIXct(1, at=seq(r[1], r[2], by="4 hours"), format="%H:%M")
 ```
 
+<img src="figure/Average Daily Activity Pattern-1.png" title="plot of chunk Average Daily Activity Pattern" alt="plot of chunk Average Daily Activity Pattern" style="display: block; margin: auto;" />
+
 #### Which time interval has max number of steps?
-```{r}
+
+```r
 maxi <- as.character(round(max(out2$avg),digits=2))
 time <- substr(strftime(day[which(out2$avg==max(out2$avg))],"%H:%M:%S"),1,5)
 ```
-### <center> The time `r time`AM has the maximum number of steps daily (`r maxi`) on average. </center>
+### <center> The time 08:35AM has the maximum number of steps daily (206.17) on average. </center>
 
 ## 3. Imputing missing values
 
 #### 1. How many NA values are in the data?
-```{r}
+
+```r
 sum(is.na(data$steps)) #Number of NAs in data
 ```
 
+```
+## [1] 2304
+```
+
 #### 2. Replace missing values with (rounded) mean number of steps for each interval
-```{r}
+
+```r
 data2 <- data %>% group_by(interval) %>% 
   mutate(new.steps = ifelse(is.na(steps), 
                             round(sum(steps,na.rm=TRUE)/(nrow(out)-sum(is.na(steps)))), steps))
@@ -72,15 +99,31 @@ data2 <- select(data2,date:new.steps) #select all but old steps variable
 ```
 
 #### 3. Calculate new mean & median for data & create histogram of total steps taken daily
-```{r Total Steps Taken Each Day (NAs Imputed), fig.align='center'}
+
+```r
 out3 <- data2 %>% group_by(date) %>% summarise(count = n(), total.steps = sum(new.steps))
 
 mean(out3$total.steps)
-median(out3$total.steps)
+```
 
+```
+## [1] 10765.64
+```
+
+```r
+median(out3$total.steps)
+```
+
+```
+## [1] 10762
+```
+
+```r
 hist(out3$total, ylim=c(0,40),
      xlab="Total Steps", main="Total Steps Taken Each Day (NAs Imputed)")
 ```
+
+<img src="figure/Total Steps Taken Each Day (NAs Imputed)-1.png" title="plot of chunk Total Steps Taken Each Day (NAs Imputed)" alt="plot of chunk Total Steps Taken Each Day (NAs Imputed)" style="display: block; margin: auto;" />
 
 ### <center> Imputing NAs with the rounded mean of steps for each interval shifts the distribution to the left slight, as the values of the mean & median both decreased. </center>
 
@@ -88,7 +131,8 @@ hist(out3$total, ylim=c(0,40),
 
 #### Compute average number of steps taken, averaged across all weekday days or weekend days
 
-```{r}
+
+```r
 # Recall from Question 2
 # int <- sprintf("%04d", data$interval) #add leading zeros
 # day <- as.POSIXct(strptime(paste(data$date,int2), "%Y-%m-%d %H%M")) 
@@ -104,7 +148,8 @@ out4 <- dat %>% group_by(newdate,day.type) %>% summarise(avg = mean(new.steps))
 ```
 
 #### Plot panels
-```{r Hourly Activity Pattern by Weekday or Weekend (NAs Imputed), message=FALSE, fig.align='center',fig.width=10}
+
+```r
 library(ggplot2)
 library(scales)
 g <- ggplot(out4, aes(strptime(newdate,"%H:%M"),avg))
@@ -114,5 +159,7 @@ g + geom_line(aes(group=day.type,color=day.type)) + facet_grid(day.type ~ .) +
   labs(title="Hourly Activity Pattern (NAs Imputed)", 
        x="Hour of Day",y="Average Number of Steps") 
 ```
+
+<img src="figure/Hourly Activity Pattern by Weekday or Weekend (NAs Imputed)-1.png" title="plot of chunk Hourly Activity Pattern by Weekday or Weekend (NAs Imputed)" alt="plot of chunk Hourly Activity Pattern by Weekday or Weekend (NAs Imputed)" style="display: block; margin: auto;" />
 
 ### <center> Activity during the weekend is less than during weekdays which suggests that the subject works from Monday-Friday and rests on Saturday & Sunday. </center>
