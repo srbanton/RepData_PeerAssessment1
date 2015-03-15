@@ -21,7 +21,7 @@ out <- data %>% group_by(date) %>% summarise(count = n(), total = sum(steps,na.r
 
 #### Calculate mean and median 
 ```{r}
-mean(out$total[!out$total==0]) #sum() replaces sums NAs to 0
+mean(out$total[!out$total==0]) #sum() sums NAs to 0
 median(out$total[!out$total==0])
 ```
 
