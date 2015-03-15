@@ -111,6 +111,7 @@ g <- ggplot(out4, aes(strptime(newdate,"%H:%M"),avg))
 g + geom_line(aes(group=day.type,color=day.type)) + facet_grid(day.type ~ .) +
   scale_x_datetime(breaks=date_breaks('2 hour'),labels=date_format('%H:%M')) +
   theme_bw() +
+  theme(legend.title=element_blank()) +
   labs(title="Hourly Activity Pattern (NAs Imputed)", 
        x="Hour of Day",y="Average Number of Steps") 
 ```

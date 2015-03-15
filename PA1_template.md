@@ -24,7 +24,7 @@ out <- data %>% group_by(date) %>% summarise(count = n(), total = sum(steps,na.r
 #### Calculate mean and median 
 
 ```r
-mean(out$total[!out$total==0]) #sum() replaces sums NAs to 0
+mean(out$total[!out$total==0]) #sum() sums NAs to 0
 ```
 
 ```
@@ -125,7 +125,7 @@ hist(out3$total, ylim=c(0,40),
 
 <img src="figure/Total Steps Taken Each Day (NAs Imputed)-1.png" title="plot of chunk Total Steps Taken Each Day (NAs Imputed)" alt="plot of chunk Total Steps Taken Each Day (NAs Imputed)" style="display: block; margin: auto;" />
 
-#### <center> Imputing NAs with the rounded mean of steps for each interval shifts the distribution to the left slight, as the values of the mean & median both decreased. </center>
+#### <center> Imputing NAs with the rounded mean of steps for each interval shifts the distribution to the left slightly, as the values of the mean & median both decreased. </center>
 
 ## 4. Are there differences in activity patterns between weekdays and weekends?
 
@@ -156,6 +156,7 @@ g <- ggplot(out4, aes(strptime(newdate,"%H:%M"),avg))
 g + geom_line(aes(group=day.type,color=day.type)) + facet_grid(day.type ~ .) +
   scale_x_datetime(breaks=date_breaks('2 hour'),labels=date_format('%H:%M')) +
   theme_bw() +
+  theme(legend.title=element_blank()) +
   labs(title="Hourly Activity Pattern (NAs Imputed)", 
        x="Hour of Day",y="Average Number of Steps") 
 ```
