@@ -82,7 +82,7 @@ hist(out3$total, ylim=c(0,40),
      xlab="Total Steps", main="Total Steps Taken Each Day (NAs Imputed)")
 ```
 
-#### <center> Imputing NAs with the rounded mean of steps for each interval shifts the distribution to the left slight, as the values of the mean & median both decreased. </center>
+#### <center> Imputing NAs with the rounded mean of steps for each interval shifts the distribution to the left slightly, as the values of the mean & median both decreased. </center>
 
 ## 4. Are there differences in activity patterns between weekdays and weekends?
 
